@@ -5,11 +5,13 @@ This repository's primary artifact is `skill/SKILL.md` — a `/setup` skill that
 ## Structure
 
 - `core/` — Language-agnostic reference guides (one topic per file)
-- `projects/` — Language-specific extensions of core guides
-- `templates/` — Copy-paste ready config templates
+- `projects/` — Language-specific extensions of core guides (Python, TypeScript, Go, Rust)
+- `templates/` — Copy-paste ready config templates (`agents/`, `skills/`, `rules/`)
+- `templates/bootstrap/` — Extracted templates used by `/bootstrap` skill
 - `prompts/` — Prompt patterns and examples
 - `skill/SKILL.md` — The `/setup` skill (self-contained)
 - `.claude/skills/bootstrap/` — The `/bootstrap` skill for new projects
+- `.claude/skills/evolve/` — The `/evolve` skill for auto-maintenance
 - `.claude/rules/` — Context-specific rules (auto-loaded by file path)
 
 ## Architecture
@@ -19,10 +21,12 @@ This is a **documentation and skills repository** — no application code, no bu
 ### Key Files
 - `skill/SKILL.md` — The `/setup` skill (also mirrored at `.claude/skills/setup/SKILL.md`)
 - `.claude/skills/bootstrap/SKILL.md` — The `/bootstrap` skill
+- `.claude/skills/evolve/SKILL.md` — The `/evolve` skill
 - `skill/OUTPUT-FORMAT.md` — Output template for `/setup` reports
 
 ### Data Flow
 - `/setup` audits → emits `setup-report` block → `/bootstrap` consumes it
+- `/evolve` auto-maintains config after tasks (via Stop hook)
 - `core/` guides are reference material for skill accuracy, not user-facing docs
 
 ## Commands
@@ -38,6 +42,9 @@ No build, test, or lint commands — this is a pure Markdown repo. Useful comman
 
 # Apply suggested config
 /bootstrap
+
+# Auto-maintain Claude Code config after tasks
+/evolve
 ```
 
 ## Code Style

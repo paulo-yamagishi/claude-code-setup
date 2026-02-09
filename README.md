@@ -1,30 +1,68 @@
 # Claude Code Setup
 
-Two skills for configuring Claude Code: `/setup` audits existing projects, `/bootstrap` scaffolds new ones.
+Three skills that form a complete lifecycle for Claude Code configuration:
+**audit** → **configure** → **maintain**.
 
-Claude Code has 11+ configuration surfaces — CLAUDE.md, settings, hooks, skills, agents, MCP, rules, plugins, sandboxing, model config, and output styles. Most projects only use 2-3. These skills find what you're missing and help you set it up.
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Claude Code](https://img.shields.io/badge/Claude_Code-compatible-8A2BE2)
+
+## The Problem
+
+Claude Code has 11 configuration surfaces — CLAUDE.md, settings, hooks, skills, agents, MCP, rules, plugins, sandboxing, model config, and output styles. Most projects use 2-3. The built-in `/init` only creates a basic `CLAUDE.md`. This toolkit **finds** what's missing, **sets it up**, and **keeps it accurate** as your code evolves.
 
 ## Requirements
 
-- [Claude Code](https://code.claude.com/docs) installed (`npm install -g @anthropic-ai/claude-code`)
-
-## Install
-
-### /setup (audit existing projects)
+- [Claude Code](https://code.claude.com/docs) installed:
 
 ```bash
-mkdir -p ~/.claude/skills/setup
+# Native installer (recommended)
+curl -fsSL https://claude.ai/install.sh | bash
+
+# Or via Homebrew
+brew install --cask claude-code
+```
+
+## Quick Start
+
+```bash
+# 1. Install the skills
+mkdir -p ~/.claude/skills/{setup,bootstrap,evolve}
 curl -o ~/.claude/skills/setup/SKILL.md \
   https://raw.githubusercontent.com/paulo-yamagishi/claude-code-setup/main/skill/SKILL.md
-```
-
-### /bootstrap (configure new or existing projects)
-
-```bash
-mkdir -p ~/.claude/skills/bootstrap
 curl -o ~/.claude/skills/bootstrap/SKILL.md \
   https://raw.githubusercontent.com/paulo-yamagishi/claude-code-setup/main/.claude/skills/bootstrap/SKILL.md
+curl -o ~/.claude/skills/evolve/SKILL.md \
+  https://raw.githubusercontent.com/paulo-yamagishi/claude-code-setup/main/.claude/skills/evolve/SKILL.md
 ```
+
+```bash
+# 2. Run /setup in any project → see your config score
+/setup
+```
+
+```bash
+# 3. Say "bootstrap" → config generated for every gap
+bootstrap
+```
+
+That's it. `/evolve` activates automatically via a Stop hook (with your consent) to keep config accurate over time.
+
+---
+
+## The Lifecycle
+
+```
+/setup                /bootstrap              /evolve
+ audit ──────────▶   configure ──────────▶   maintain
+                                               │
+ • Scans 11 categories   • 9-phase flow        • Stop hook (auto)
+ • Scores each one        • Greenfield support  • Detects drift
+ • Suggests fixes         • Reads /setup report • Minimal edits
+ • Hands off to bootstrap • Asks before writing • Never commits
+```
+
+Run `/setup` first to see the gaps. Say "bootstrap" to fill them. `/evolve` keeps everything accurate as your code changes — no manual upkeep.
 
 ---
 
@@ -33,8 +71,8 @@ curl -o ~/.claude/skills/bootstrap/SKILL.md \
 Type `/setup` in any project and Claude will:
 
 1. **Audit** your current config across 11 categories
-2. **Suggest** improvements tailored to your tech stack — individual configs plus complete workflows (e.g., GitHub Issue → PR, TDD Loop, Deploy Pipeline)
-3. **Apply** only what you approve — progressive disclosure shows a scorecard first, details on request
+2. **Suggest** improvements tailored to your tech stack — individual configs plus complete workflows
+3. **Apply** only what you approve — shows a scorecard first, details on request
 
 ### Usage
 
@@ -65,10 +103,10 @@ Type `/setup` in any project and Claude will:
 | Agents | Exist, tool restrictions, appropriate model selection |
 | MCP | Configured, no hardcoded secrets, minimal server count |
 | Rules | Exist, split by topic, focused files |
-| Plugins | Installed, code intelligence for typed languages, marketplace |
+| Plugins | Installed, code intelligence for typed languages |
 | Sandboxing | Enabled, auto-allow mode, allowed domains |
-| Model Config | Model alias set, opusplan usage, effort level |
-| Output Styles | Custom styles directory, team styles, settings |
+| Model Config | Model alias set, effort level configured |
+| Output Styles | Custom styles directory, team styles |
 
 ### Example Output
 
@@ -81,75 +119,46 @@ Type `/setup` in any project and Claude will:
 | Settings      | IMPROVE | Missing deny rules              |
 | Hooks         | MISSING | No hooks configured             |
 | Skills        | MISSING | No skills directory             |
-| Agents        | MISSING | No agents directory             |
 | MCP           | GOOD    | GitHub configured               |
-| Rules         | MISSING | No rules directory              |
-| Plugins       | MISSING | No plugins installed            |
-| Sandboxing    | MISSING | Not enabled                     |
-| Model Config  | IMPROVE | Using default, no effort level  |
-| Output Styles | MISSING | No custom styles                |
 
-Score: 2/11 GOOD · 2 IMPROVE · 7 MISSING
+Score: 2/11 GOOD · 1 IMPROVE · 8 MISSING
 
-## Top Suggestions
-
-1. [Hooks] Add auto-format hook for Prettier (detected)
-2. [Settings] Add deny rules for destructive commands
-3. [Skills] Create fix-issue skill for GitHub workflow
-4. [Plugins] Install TypeScript code intelligence plugin
-5. [Sandbox] Enable sandbox for autonomous work
-
-Say 'details 1' for config snippet, or 'bootstrap' to apply all suggestions automatically.
+Say 'details 1' for config snippet, or 'bootstrap' to apply all suggestions.
 ```
 
 ---
 
-## /setup → /bootstrap Flow
+## /bootstrap — Configure a Project
 
-Run `/setup` first, then say "bootstrap" in the same conversation. `/bootstrap` will pick up your audit results automatically — no re-detection needed.
+Type `/bootstrap` in any project — new or existing — and Claude will interactively configure everything.
+
+### 9-Phase Flow
+
+0. **Check for setup report** — uses `/setup` findings if available
+1. **Detect** project stack (language, framework, package manager, tools)
+2. **Greenfield scaffolding** — empty directory? Asks what to build, initializes the project
+3. **Generate CLAUDE.md** — tailored to your stack
+4. **Configure settings** — permissions, deny rules, hooks (auto-format, lint, notifications), sandbox, model config
+5. **Create skills** — `/fix-issue`, `/code-review`, plus conditional ones per stack
+6. **Create agents** — code-reviewer, test-writer, optional security-auditor
+7. **Set up MCP** — GitHub, database, Slack based on detection
+8. **Generate rules and output styles** — code style, testing, git conventions
+
+### /setup → /bootstrap Handoff
+
+Run `/setup` first, then say "bootstrap" in the same conversation:
 
 ```
-/setup  ──audit──▶  scorecard + suggestions + handoff block
+/setup  ──audit──▶  scorecard + suggestions
                          │
   user says "bootstrap"  │
                          ▼
 /bootstrap  ──▶  "Found your /setup audit — focusing on the gaps."
                  • Prioritizes IMPROVE and MISSING categories
                  • Skips prompting for GOOD categories
-                 • Uses suggestions as a checklist
 ```
 
-Running `/bootstrap` standalone (without a prior `/setup`) works fine — it does full detection on its own.
-
----
-
-## /bootstrap — Set Up a Project from Scratch
-
-Type `/bootstrap` in any project — new or existing — and Claude will interactively configure everything for you.
-
-### What It Does
-
-`/bootstrap` runs a 9-phase interactive flow (Phase 0 + Phases 1–8):
-
-0. **Check for setup report** — if `/setup` was run earlier in the conversation, uses its findings to focus work
-1. **Detect** your project stack (language, framework, package manager, tools)
-2. **Greenfield scaffolding** — if the directory is empty, asks what you want to build and initializes the project (installs dependencies, creates directory structure, starter files)
-3. **Generate CLAUDE.md** — tailored to your stack with build commands, code style, and project conventions
-4. **Configure settings** — permissions, deny rules, hooks (auto-format, lint-on-save, dangerous command blocking)
-5. **Create skills** — `/fix-issue` and `/code-review` skills, plus conditional ones based on your stack
-6. **Create agents** — code-reviewer, test-writer, and conditional agents (security-auditor for web apps, etc.)
-7. **Set up MCP** — GitHub, database, Slack, and other servers based on what's detected
-8. **Generate rules** — `.claude/rules/` files for code style, testing conventions, and git workflow
-
-### Greenfield Support
-
-Starting a brand new project? `/bootstrap` handles it:
-
-- Asks your preferred language, framework, package manager, and project type
-- Runs the appropriate init command (`npm init`, `cargo init`, `uv init`, `go mod init`, etc.)
-- Installs framework + dev tools (formatter, linter, test runner)
-- Creates standard directory structure (`src/`, `tests/`, config files)
-- Then proceeds with full Claude Code configuration
+Running `/bootstrap` standalone works fine — it does full detection on its own.
 
 ### Usage
 
@@ -161,19 +170,101 @@ Starting a brand new project? `/bootstrap` handles it:
 
 ---
 
-## Also In This Repo
+## /evolve — Auto-Maintain Config
 
-| Path | Description |
-|------|-------------|
-| `skill/SKILL.md` | The `/setup` skill source |
-| `.claude/skills/bootstrap/SKILL.md` | The `/bootstrap` skill source |
-| `core/` | Reference guides for hooks, skills, MCP, settings, agents, model config, sandboxing, and more |
-| `templates/` | Copy-paste templates for manual config |
-| `projects/` | Language-specific guides (Python, TypeScript, etc.) |
+`/evolve` keeps your Claude Code configuration accurate as your codebase changes. It runs after each task via a Stop hook — with your consent.
+
+### What It Does
+
+After each task completes, `/evolve` silently checks whether any config files have drifted:
+
+| Config File | What's Checked |
+|---|---|
+| `CLAUDE.md` | Structure matches actual dirs, commands are correct |
+| `CHANGELOG.md` | Unreleased section has entry for work just done |
+| `.claude/skills/` | Commands and file paths still valid |
+| `.claude/rules/` | Conventions still match actual code patterns |
+| `.claude/agents/` | Tool lists and model choices still appropriate |
+| `.claude/settings.json` | New commands that should be in allow list |
+
+### How It Works
+
+1. **First run:** asks permission to install a Stop hook in `.claude/settings.json`
+2. **After each task:** detects what changed via `git diff`, evaluates each config file
+3. **Applies minimal edits** — only files that are actually stale
+4. **Reports changes** in one line, or stays completely silent if nothing needed
+
+### Safety Guarantees
+
+- **Never commits** — only edits files, you decide when to commit
+- **Never creates files** unless a clear repeatable pattern was found (2+ times)
+- **Skips `.claude/` loops** — exits silently if only config files changed
+- **Conservative** — when uncertain, suggests instead of editing
+- **Removable** — delete the Stop hook entry from `.claude/settings.json` to disable
+
+---
+
+## Detection Matrix
+
+Languages and tools recognized by `/setup` and `/bootstrap`:
+
+| Language | Frameworks | Formatter | Linter | Test Runner |
+|----------|-----------|-----------|--------|-------------|
+| Node.js / TypeScript | React, Vue, Next.js, Express, Fastify, Hono | Prettier, Biome | ESLint, Biome (flat config) | Jest, Vitest |
+| Python | Django, Flask, FastAPI | Black, Ruff | Ruff, Pylint | pytest |
+| Rust | Actix, Axum, Rocket | rustfmt | Clippy | cargo test |
+| Go | Gin, Echo, Chi | gofmt | golangci-lint | go test |
+| Java / JVM | Spring Boot, Quarkus | — | — | — |
+| Ruby | Rails, Sinatra | — | — | — |
+| PHP | Laravel, Symfony | PHP CS Fixer | — | PHPUnit |
+
+Package managers: npm, yarn, pnpm, bun, pip, poetry, uv, cargo, go mod, bundle, composer.
+
+---
+
+## What's Included
+
+### 3 Installable Skills
+
+| Skill | Purpose |
+|-------|---------|
+| `/setup` | Audit existing config, score 11 categories, suggest fixes |
+| `/bootstrap` | 9-phase interactive config generator (new + existing projects) |
+| `/evolve` | Auto-maintain config via Stop hook after every task |
+
+### 26 Core Reference Guides (`core/`)
+
+Hooks, skills, MCP, settings, agents, model config, sandboxing, plugins, output styles, CLI reference, debugging, testing strategy, prompting, git conventions, session management, subagents, headless mode, checkpointing, terminal setup, workflows, and more.
+
+### 6 Language-Specific Project Guides (`projects/`)
+
+Python, TypeScript, Go, Rust, Fullstack, Data Science — each extends the core guides with stack-specific hooks, settings, and skills.
+
+### 14 Copy-Paste Templates (`templates/`)
+
+Ready-to-use templates for agents, skills, rules, settings, CLAUDE.md, MCP servers, and bootstrap scaffolding.
+
+---
+
+## FAQ
+
+**How is this different from `/init`?**
+`/init` creates a basic `CLAUDE.md`. This toolkit audits all 11 config surfaces, generates settings, hooks, skills, agents, MCP configs, rules, and output styles — then keeps them accurate over time.
+
+**Can I use just one skill?**
+Yes. Each skill works standalone. `/setup` only reads and reports. `/bootstrap` only writes with your approval. `/evolve` only runs if you install its hook.
+
+**Will `/evolve` overwrite my config?**
+No. It makes minimal targeted edits to stale files. It never rewrites entire files, never commits, and exits silently if nothing needs updating.
+
+**What if `/bootstrap` runs on a project with existing config?**
+It detects existing files and offers three choices per file: overwrite, merge, or skip. Nothing is lost without your approval.
+
+---
 
 ## Contributing
 
-Issues and PRs are welcome. If you find inaccurate config examples or missing Claude Code features, please open an issue.
+Issues and PRs are welcome. If you find inaccurate config examples, missing Claude Code features, or detection gaps for your stack, please open an issue.
 
 ## License
 
@@ -181,4 +272,4 @@ Issues and PRs are welcome. If you find inaccurate config examples or missing Cl
 
 ## Official Docs
 
-- [Claude Code](https://code.claude.com/docs)
+- [Claude Code Documentation](https://code.claude.com/docs)

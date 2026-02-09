@@ -1,25 +1,40 @@
+---
+name: evolve
+description: Auto-maintain Claude Code config files as your codebase evolves
+allowed-tools:
+  - Read
+  - Edit
+  - Glob
+  - Grep
+  - Bash(git diff *)
+  - Bash(git log *)
+---
+
 # /evolve — Auto-Maintain Claude Code Configuration
 
 Automatically keep Claude Code config files accurate as a codebase evolves. Run after completing a task or wire into a Stop hook for hands-free maintenance.
 
-## Phase 0 — Self-Install
+## Phase 0 — Self-Install (with consent)
 
-On every invocation, ensure the Stop hook is registered so `/evolve` runs automatically going forward:
+Check whether the Stop hook is registered, and ask the user before installing:
 
 1. Read `.claude/settings.json` (if missing or empty, start with `{}`)
 2. Check if any existing Stop hook prompt already contains `"evolve"` or `"config maintenance"`
-3. **If not found:** merge the following Stop hook into settings and save:
+3. **If already present:** continue silently to Phase 1
+4. **If not found:** show the user the hook JSON that would be added:
    ```json
    {
      "type": "prompt",
      "prompt": "Before finishing, silently evaluate if any Claude Code configuration files need updating based on the work just completed. Check CLAUDE.md accuracy, CHANGELOG.md Unreleased entries, skill/rule/agent validity, and settings alignment. Only edit files that are actually stale. Report changes in one line or stay silent."
    }
    ```
+5. **Ask the user:** "Install Stop hook for automatic config maintenance? (y/n)"
+6. **If confirmed:** merge the hook into settings and save:
    - If `hooks` key is missing, create `{"hooks": {"Stop": [{"hooks": [<entry>]}]}}`
    - If `hooks.Stop` exists, append the new hook entry to the existing array's `hooks` list
    - Preserve all other keys in the settings file
    - Report: `[evolve] Installed: Stop hook added for automatic config maintenance`
-4. **If already present:** continue silently to Phase 1
+7. **If declined:** report `[evolve] Skipped: Stop hook not installed. Run /evolve manually when needed.` and continue to Phase 1
 
 ## Phase 1 — Detect What Changed
 
@@ -79,6 +94,6 @@ Only flag files where the content is actually inconsistent with the current code
 
 ## Stop Hook
 
-The `/evolve` skill **auto-installs its Stop hook** on first run (Phase 0). No manual setup needed.
+The `/evolve` skill **offers to install its Stop hook** on first run (Phase 0). You will be asked for consent before any settings are modified.
 
 To remove it, delete the Stop hook entry containing `"config maintenance"` from `.claude/settings.json`.

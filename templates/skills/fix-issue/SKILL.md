@@ -9,6 +9,8 @@ allowed-tools:
   - Glob
   - Grep
   - Bash(gh *)
+  - Bash(git commit *)
+  - Bash(git push)
 ---
 
 # Fix Issue

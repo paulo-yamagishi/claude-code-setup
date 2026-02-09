@@ -150,6 +150,8 @@ Set `permissions.allow` in `.claude/settings.json` to reduce approval prompts:
 }
 ```
 
+**Modern alternatives:** [Biome](https://biomejs.dev/) combines linting and formatting in one tool, replacing ESLint + Prettier for JavaScript/TypeScript projects.
+
 ### Hooks, Skills, and MCP
 
 - **Hooks** — Automate checks on tool events. See `core/hooks-guide.md`.

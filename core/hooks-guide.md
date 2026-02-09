@@ -145,6 +145,35 @@ Prevent destructive bash commands:
 }
 ```
 
+## Async Hooks
+
+Add `"async": true` to run a hook in the background without blocking Claude. The hook starts but Claude continues working immediately.
+
+**When to use:** Long-running tasks like full test suites or linting large codebases.
+
+```json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npm test 2>&1 | tail -5",
+            "async": true
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+Async hooks cannot block operations (exit code 2 is ignored). Use them only for side effects like notifications or background checks.
+
+---
+
 ### Notify on completion (macOS)
 
 ```json

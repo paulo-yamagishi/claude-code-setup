@@ -28,7 +28,7 @@ Silently scan the project. Do NOT dump raw file contents to the user.
 
 **Project stack:** Read `package.json`, `pyproject.toml`, `Cargo.toml`, `go.mod`, `pom.xml`, `Gemfile`, `composer.json` (whichever exists). Note: language, framework, package manager.
 
-**Tools:** Check for formatters (`.prettierrc*`, `[tool.black]`, `.rustfmt.toml`), linters (`.eslintrc*`, `eslint.config.*`, `[tool.ruff]`, `.golangci.yml`), test runners (test script in package.json, `[tool.pytest]`, `*_test.go`), lockfiles.
+**Tools:** Check for formatters (`.prettierrc*`, `[tool.black]`, `.rustfmt.toml`, `biome.json`/`biome.jsonc`), linters (`.eslintrc*`, `eslint.config.*`, `[tool.ruff]`, `.golangci.yml`, `biome.json`/`biome.jsonc`), test runners (test script in package.json, `[tool.pytest]`, `*_test.go`), lockfiles.
 
 **Existing Claude config:** Check for `.claude/` directory, `CLAUDE.md`, `.claude/settings.json`, `.claude/settings.local.json`, `.claude/skills/`, `.claude/agents/`, `.claude/rules/`, `.claude/output-styles/`, `.mcp.json`. Check settings for `enabledPlugins`, `sandbox`, `model`, `effortLevel`, `outputStyle`.
 
@@ -46,26 +46,32 @@ Score each category: **GOOD**, **IMPROVE**, **MISSING**.
 1. Exists at `./CLAUDE.md` or `./.claude/CLAUDE.md`?
 2. Under 500 lines? Uses `@imports` for detailed docs?
 3. Has key sections: Commands (test/lint/build), Architecture, Code Style?
+4. CLAUDE.md mentions context management practices? (`/compact`, `/clear`, `@imports` for large docs)
+
+> Note: Claude Code's built-in `/init` generates a basic CLAUDE.md. `/setup` goes beyond `/init` by auditing all 11 configuration categories and `/bootstrap` generates production-grade config including hooks, skills, agents, and rules.
 
 ### Settings
 1. `.claude/settings.json` exists with `permissions.allow` for detected safe commands?
 2. `permissions.deny` configured for dangerous operations?
 3. `.claude/settings.local.json` exists and is in `.gitignore`?
+4. Check for `teammateMode` setting if project uses agent teams
 
 ### Hooks
 1. PostToolUse hook for auto-formatting on Write/Edit using detected formatter?
 2. Stop hook for completion notification?
 3. PreToolUse hook blocking dangerous Bash commands?
+4. Check for `TeammateIdle` and `TaskCompleted` hook usage for team workflows
 
 ### Skills
 1. `.claude/skills/` directory exists with at least one skill?
 2. Skills use proper SKILL.md format with frontmatter?
-3. Common skills present: `fix-issue`, `code-review`?
+3. CLAUDE.md contains skill lifecycle instruction (evaluate creating/updating skills after major tasks)?
 
 ### Agents
 1. `.claude/agents/` directory exists with custom agents?
 2. Agents have tool restrictions (not inheriting all tools)?
 3. Model set appropriately (sonnet for fast tasks, opus for complex)?
+4. Check if any agents have team-oriented configurations (delegate mode, shared skills)
 
 ### MCP
 1. `.mcp.json` exists with configured servers?
@@ -180,7 +186,7 @@ After the interactive prompt, emit the handoff block defined in OUTPUT-FORMAT.md
 Use detected stack to generate project-specific suggestions:
 
 - **Hooks**: Detected Prettier → `prettier --write "$CLAUDE_TOOL_INPUT_PATH"`. Detected Black → `black "$CLAUDE_TOOL_INPUT_PATH" 2>/dev/null || true`. Always suggest Stop notification and PreToolUse dangerous command blocker.
-- **Skills**: Always fix-issue + code-review. React/Vue → create-component. Django/Rails/Prisma → migrate.
+- **Skills**: Always fix-issue + code-review. React/Vue → create-component. Django/Rails/Prisma → migrate. Always suggest skill lifecycle instruction in CLAUDE.md if missing.
 - **Agents**: Always code-reviewer (sonnet) + test-writer (sonnet). Production app → security-auditor (opus).
 - **MCP**: GitHub remote → GitHub server. PostgreSQL/MySQL in deps → database server.
 - **Settings**: Detected test/lint/build → permissions.allow. Standard deny rules for rm -rf, DROP, --force.
@@ -200,6 +206,7 @@ Match detected project characteristics to workflows. Present 1-3 most relevant, 
 - **CI/CD**: `.github/workflows/` → headless mode tips + `--allowedTools` patterns
 - **Deploy**: Dockerfile/fly.toml/vercel.json → `/deploy` skill + pre-deploy test hook
 - **Security-First**: Auth deps + Docker → security-auditor agent (opus) + deny rules for secrets
+- **Agent Team Workflow**: Multiple agents + teammateMode → teammateMode setting + team-oriented agents + delegate mode
 
 Output in Layer 2: `6. [Workflow · MEDIUM] GitHub Issue → PR: end-to-end issue fixing`. Details on request (Layer 3).
 
