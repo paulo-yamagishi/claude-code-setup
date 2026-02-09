@@ -48,6 +48,14 @@ No build, test, or lint commands — this is a pure Markdown repo. Useful comman
 - **Line limits:** Files under 300 lines where possible; skills under 200 lines
 - **Cross-references:** Use relative paths like `../core/hooks-guide.md`
 
+## Versioning
+
+This project uses [Semantic Versioning](https://semver.org/). The current version lives in `VERSION` (single-line file). All notable changes are tracked in `CHANGELOG.md` following [Keep a Changelog](https://keepachangelog.com/) format.
+
+- **Release workflow:** Run `/release <major|minor|patch>` to bump, update changelog, commit, and tag
+- **Tags:** Every release is tagged `vX.Y.Z`
+- **Bump guide:** `patch` for fixes, `minor` for new skills/guides, `major` for breaking restructures
+
 ## Skill Lifecycle
 
 After completing a major task, evaluate:
