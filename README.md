@@ -99,9 +99,27 @@ Score: 2/11 GOOD · 2 IMPROVE · 7 MISSING
 4. [Plugins] Install TypeScript code intelligence plugin
 5. [Sandbox] Enable sandbox for autonomous work
 
-Want details on any suggestion? Say 'details 1' or 'details all'.
-To apply: 'apply 1, 3, 5' or 'apply all'.
+Say 'details 1' for config snippet, or 'bootstrap' to apply all suggestions automatically.
 ```
+
+---
+
+## /setup → /bootstrap Flow
+
+Run `/setup` first, then say "bootstrap" in the same conversation. `/bootstrap` will pick up your audit results automatically — no re-detection needed.
+
+```
+/setup  ──audit──▶  scorecard + suggestions + handoff block
+                         │
+  user says "bootstrap"  │
+                         ▼
+/bootstrap  ──▶  "Found your /setup audit — focusing on the gaps."
+                 • Prioritizes IMPROVE and MISSING categories
+                 • Skips prompting for GOOD categories
+                 • Uses suggestions as a checklist
+```
+
+Running `/bootstrap` standalone (without a prior `/setup`) works fine — it does full detection on its own.
 
 ---
 
@@ -111,8 +129,9 @@ Type `/bootstrap` in any project — new or existing — and Claude will interac
 
 ### What It Does
 
-`/bootstrap` runs an 8-phase interactive flow:
+`/bootstrap` runs a 9-phase interactive flow (Phase 0 + Phases 1–8):
 
+0. **Check for setup report** — if `/setup` was run earlier in the conversation, uses its findings to focus work
 1. **Detect** your project stack (language, framework, package manager, tools)
 2. **Greenfield scaffolding** — if the directory is empty, asks what you want to build and initializes the project (installs dependencies, creates directory structure, starter files)
 3. **Generate CLAUDE.md** — tailored to your stack with build commands, code style, and project conventions
