@@ -80,7 +80,98 @@ Scan for common patterns:
 - `.mcp.json` exists?
 - Git repository? Check for `.git/`
 
-**Report findings to user:** "I've detected [language/framework]. Ready to configure?"
+### 1.5 Greenfield Detection
+
+If **no** project metadata files were found in 1.1 (no `package.json`, `pyproject.toml`, `Cargo.toml`, `go.mod`, etc.) **and** no source directories exist (`src/`, `lib/`, `app/`, `pkg/`), this is a **greenfield project**. Skip directly to **Phase 1.5** below.
+
+Otherwise, **report findings to user:** "I've detected [language/framework]. Ready to configure?" and continue to Phase 2.
+
+---
+
+## Phase 1.5: Interactive Stack Selection (Greenfield Only)
+
+When a greenfield project is detected, interactively ask the user to define their stack.
+
+### Step 1: Language/Runtime
+
+ASK: "What language/runtime will this project use?"
+
+Options:
+1. Node.js / TypeScript
+2. Python
+3. Rust
+4. Go
+5. Java
+6. Ruby
+7. PHP
+8. Other (specify)
+
+### Step 2: Framework
+
+ASK based on language selection:
+
+- **Node.js/TypeScript:** Next.js, Express, Fastify, Hono, None
+- **Python:** Django, Flask, FastAPI, None
+- **Rust:** Actix, Axum, Rocket, None (binary)
+- **Go:** Gin, Echo, Chi, None (standard library)
+- **Java:** Spring Boot, Quarkus, None
+- **Ruby:** Rails, Sinatra, None
+- **PHP:** Laravel, Symfony, None
+
+### Step 3: Package Manager
+
+ASK based on language:
+
+- **Node.js:** npm, yarn, pnpm, bun
+- **Python:** pip, poetry, uv
+- **Rust:** cargo (default)
+- **Go:** go modules (default)
+- **Java:** Maven, Gradle
+- **Ruby:** bundler (default)
+- **PHP:** composer (default)
+
+### Step 4: Project Type
+
+ASK: "What type of project is this?"
+
+Options:
+1. API / backend service
+2. Web application
+3. CLI tool
+4. Library / package
+5. Monorepo
+
+### Step 5: Extras
+
+ASK (multi-select): "Which extras do you want?"
+
+Options:
+1. Testing framework
+2. Linting
+3. Formatting
+4. CI/CD (GitHub Actions)
+5. Docker
+6. Database
+
+### Step 6: Scaffold the Project
+
+Based on the answers, execute the following:
+
+**Initialize project** using the selected package manager:
+- Node.js: `npm init -y` / `yarn init -y` / `pnpm init` / `bun init`
+- Python: `uv init` / `poetry init --no-interaction` / create `pyproject.toml`
+- Rust: `cargo init` · Go: `go mod init [module-name]` (ASK for module name)
+- Java: `mvn archetype:generate` / `gradle init` · Ruby: `bundle init` · PHP: `composer init --no-interaction`
+
+**Install framework + dev tools** (formatter, linter, test runner) appropriate for the language.
+
+**Create directory structure:** `src/`, `tests/`, plus project-type-specific subdirectories (e.g., `src/routes/` for APIs, `src/components/` for web apps, `src/commands/` for CLIs).
+
+**Create starter files:** language entry point (`src/index.ts`, `src/main.py`, etc.), config files (tsconfig.json, ruff in pyproject.toml, etc.), `.gitignore`, and `README.md`.
+
+**If extras selected:** install testing framework + sample test, create `.github/workflows/ci.yml` for CI/CD, create `Dockerfile` + `.dockerignore` for Docker, install ORM/driver for database.
+
+After scaffolding, proceed to **Phase 2** with the now-known stack.
 
 ---
 

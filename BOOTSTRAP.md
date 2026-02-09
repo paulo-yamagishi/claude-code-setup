@@ -26,3 +26,5 @@ The full bootstrap logic lives in `.claude/skills/bootstrap/SKILL.md`.
 ## When to Use
 
 Use `/bootstrap` when setting up Claude Code on a new or existing project for the first time. It replaces manual configuration with an interactive, stack-aware setup flow.
+
+For **greenfield projects** (empty directories), `/bootstrap` will interactively ask about your desired stack and scaffold the project before configuring Claude Code.
