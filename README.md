@@ -1,8 +1,8 @@
-# Claude Code Setup Advisor
+# Claude Code Setup
 
-A `/setup` skill that audits your Claude Code configuration and suggests project-tailored improvements.
+Two skills for configuring Claude Code: `/setup` audits existing projects, `/bootstrap` scaffolds new ones.
 
-Claude Code has 11+ configuration surfaces — CLAUDE.md, settings, hooks, skills, agents, MCP, rules, plugins, sandboxing, model config, and output styles. Most projects only use 2-3. This skill finds what you're missing and helps you set it up.
+Claude Code has 11+ configuration surfaces — CLAUDE.md, settings, hooks, skills, agents, MCP, rules, plugins, sandboxing, model config, and output styles. Most projects only use 2-3. These skills find what you're missing and help you set it up.
 
 ## Requirements
 
@@ -10,15 +10,25 @@ Claude Code has 11+ configuration surfaces — CLAUDE.md, settings, hooks, skill
 
 ## Install
 
+### /setup (audit existing projects)
+
 ```bash
 mkdir -p ~/.claude/skills/setup
 curl -o ~/.claude/skills/setup/SKILL.md \
   https://raw.githubusercontent.com/paulo-yamagishi/claude-code-setup/main/skill/SKILL.md
 ```
 
-Then type `/setup` in any Claude Code session.
+### /bootstrap (configure new or existing projects)
 
-## What It Does
+```bash
+mkdir -p ~/.claude/skills/bootstrap
+curl -o ~/.claude/skills/bootstrap/SKILL.md \
+  https://raw.githubusercontent.com/paulo-yamagishi/claude-code-setup/main/.claude/skills/bootstrap/SKILL.md
+```
+
+---
+
+## /setup — Audit Your Config
 
 Type `/setup` in any project and Claude will:
 
@@ -26,7 +36,7 @@ Type `/setup` in any project and Claude will:
 2. **Suggest** improvements tailored to your tech stack — individual configs plus complete workflows (e.g., GitHub Issue → PR, TDD Loop, Deploy Pipeline)
 3. **Apply** only what you approve — progressive disclosure shows a scorecard first, details on request
 
-## Usage
+### Usage
 
 | Command | What it does |
 |---------|-------------|
@@ -44,7 +54,7 @@ Type `/setup` in any project and Claude will:
 | `/setup model` | Audit only model configuration |
 | `/setup styles` | Audit only output styles |
 
-## What Gets Audited
+### What Gets Audited
 
 | Category | What's checked |
 |----------|---------------|
@@ -60,7 +70,7 @@ Type `/setup` in any project and Claude will:
 | Model Config | Model alias set, opusplan usage, effort level |
 | Output Styles | Custom styles directory, team styles, settings |
 
-## Example Output
+### Example Output
 
 ```
 ## Setup Scorecard
@@ -93,12 +103,51 @@ Want details on any suggestion? Say 'details 1' or 'details all'.
 To apply: 'apply 1, 3, 5' or 'apply all'.
 ```
 
+---
+
+## /bootstrap — Set Up a Project from Scratch
+
+Type `/bootstrap` in any project — new or existing — and Claude will interactively configure everything for you.
+
+### What It Does
+
+`/bootstrap` runs an 8-phase interactive flow:
+
+1. **Detect** your project stack (language, framework, package manager, tools)
+2. **Greenfield scaffolding** — if the directory is empty, asks what you want to build and initializes the project (installs dependencies, creates directory structure, starter files)
+3. **Generate CLAUDE.md** — tailored to your stack with build commands, code style, and project conventions
+4. **Configure settings** — permissions, deny rules, hooks (auto-format, lint-on-save, dangerous command blocking)
+5. **Create skills** — `/fix-issue` and `/code-review` skills, plus conditional ones based on your stack
+6. **Create agents** — code-reviewer, test-writer, and conditional agents (security-auditor for web apps, etc.)
+7. **Set up MCP** — GitHub, database, Slack, and other servers based on what's detected
+8. **Generate rules** — `.claude/rules/` files for code style, testing conventions, and git workflow
+
+### Greenfield Support
+
+Starting a brand new project? `/bootstrap` handles it:
+
+- Asks your preferred language, framework, package manager, and project type
+- Runs the appropriate init command (`npm init`, `cargo init`, `uv init`, `go mod init`, etc.)
+- Installs framework + dev tools (formatter, linter, test runner)
+- Creates standard directory structure (`src/`, `tests/`, config files)
+- Then proceeds with full Claude Code configuration
+
+### Usage
+
+```
+/bootstrap              # Full interactive setup
+/bootstrap express      # Hint: Express.js project
+/bootstrap fastapi      # Hint: FastAPI project
+```
+
+---
+
 ## Also In This Repo
 
 | Path | Description |
 |------|-------------|
-| `skill/SKILL.md` | The `/setup` skill source (install this) |
-| `BOOTSTRAP.md` | Full greenfield setup automation (for new projects) |
+| `skill/SKILL.md` | The `/setup` skill source |
+| `.claude/skills/bootstrap/SKILL.md` | The `/bootstrap` skill source |
 | `core/` | Reference guides for hooks, skills, MCP, settings, agents, model config, sandboxing, and more |
 | `templates/` | Copy-paste templates for manual config |
 | `projects/` | Language-specific guides (Python, TypeScript, etc.) |
