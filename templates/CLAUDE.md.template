@@ -1,0 +1,47 @@
+# Project Name <!-- CUSTOMIZE -->
+
+## Overview
+<!-- CUSTOMIZE: Brief description of what this project does -->
+
+## Architecture
+<!-- CUSTOMIZE: Key architectural decisions, main modules/packages -->
+
+## Tech Stack
+<!-- CUSTOMIZE: Languages, frameworks, key dependencies -->
+
+## Commands
+<!-- CUSTOMIZE: Add your project's commands -->
+- Build: `npm run build`
+- Test: `npm test`
+- Lint: `npm run lint`
+- Dev: `npm run dev`
+
+## Code Style
+<!-- CUSTOMIZE: Your project's conventions -->
+- Use TypeScript strict mode
+- Prefer functional patterns
+- Use named exports
+
+## Testing
+<!-- CUSTOMIZE: Testing conventions -->
+- Write tests for all new features
+- Run tests before committing
+- Minimum 80% coverage for new code
+
+## File Structure
+<!-- CUSTOMIZE: Describe your project layout -->
+
+## Conventions
+<!-- CUSTOMIZE: Project-specific rules -->
+- Use conventional commits
+- PR reviews required before merge
+- No direct pushes to main
+
+## Common Patterns
+<!-- CUSTOMIZE: Patterns used in this codebase -->
+
+## Known Issues
+<!-- CUSTOMIZE: Things Claude should know about -->
+
+## External References
+<!-- CUSTOMIZE: Links to relevant docs, APIs, etc. -->

@@ -1,0 +1,62 @@
+# CLAUDE.md — {{PROJECT_NAME}}
+
+## Overview
+
+{{Brief description of what this project does.}}
+
+## Setup
+
+```bash
+uv venv && source .venv/bin/activate
+uv pip install -e ".[dev]"
+```
+
+## Commands
+
+```bash
+# Testing
+pytest                          # run all tests
+pytest tests/ -x --tb=short     # stop on first failure, short traceback
+pytest -k "test_name"           # run a specific test
+
+# Linting & Formatting
+ruff check .                    # lint
+ruff check . --fix              # lint and auto-fix
+ruff format .                   # format code
+
+# Type Checking
+mypy src/                       # type check
+```
+
+## Project Structure
+
+```
+src/{{package_name}}/       — main package
+tests/                      — test suite (mirrors src structure)
+```
+
+## Code Conventions
+
+- Python 3.12+
+- Type hints on all function signatures
+- Google-style docstrings on public functions
+- Use `pathlib.Path` for file operations, never `os.path`
+- Use `dataclasses` or `pydantic` models for structured data
+- Prefer `ruff` rules over manual style enforcement
+
+## Testing Conventions
+
+- Use `pytest` fixtures in `conftest.py` for shared setup
+- Use `@pytest.mark.parametrize` for input variations
+- Name test files `test_<module>.py`, test functions `test_<behavior>`
+- Keep tests focused: one assertion concept per test
+
+## Dependencies
+
+- All deps declared in `pyproject.toml`
+- Pin minimum versions: `requests>=2.31`
+- Dev deps under `[project.optional-dependencies] dev = [...]`
+
+## Important Notes
+
+{{Any project-specific gotchas, environment variables, or context Claude needs.}}

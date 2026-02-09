@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pytest*)",
+      "Bash(python*)",
+      "Bash(ruff*)",
+      "Bash(mypy*)",
+      "Bash(uv pip*)",
+      "Bash(pip install*)",
+      "Bash(source .venv/bin/activate*)"
+    ],
+    "deny": [
+      "Bash(pip install --user*)",
+      "Bash(rm -rf /)*"
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run*)",
+      "Bash(npm install*)",
+      "Bash(npm test*)",
+      "Bash(npx tsc*)",
+      "Bash(npx vitest*)",
+      "Bash(npx jest*)",
+      "Bash(npx eslint*)",
+      "Bash(npx prettier*)",
+      "Bash(npx prisma*)",
+      "Bash(npx drizzle-kit*)",
+      "Bash(npx playwright*)",
+      "Bash(node *)",
+      "Bash(pnpm *)",
+      "Bash(bun *)"
+    ],
+    "deny": [
+      "Bash(rm -rf /)*",
+      "Bash(npx prisma migrate reset --force)*"
+    ]
+  }
+}

@@ -1,0 +1,65 @@
+# CLAUDE.md — {{PROJECT_NAME}}
+
+## Overview
+
+{{Brief description: what data, what problem, what approach.}}
+
+## Setup
+
+```bash
+uv venv && source .venv/bin/activate
+uv pip install -e ".[dev]"
+```
+
+## Commands
+
+```bash
+# Notebooks
+jupyter lab                     # start notebook server
+
+# Testing
+pytest                          # run all tests
+pytest tests/ -x                # stop on first failure
+
+# Training
+python -m src.models.train      # run training pipeline
+
+# Linting
+ruff check . && ruff format .
+```
+
+## Project Structure
+
+```
+notebooks/          — exploration and prototyping (numbered)
+src/data/           — data loading and cleaning functions
+src/features/       — feature engineering
+src/models/         — model training, evaluation, prediction
+data/raw/           — original data (DO NOT MODIFY)
+data/processed/     — cleaned/transformed data
+models/             — serialized trained models
+```
+
+## Data Conventions
+
+- Raw data in `data/raw/` is immutable — never overwrite
+- Processed data goes in `data/processed/`
+- Document data sources and schemas in this file or `data/README.md`
+
+## Code Conventions
+
+- Extract reusable logic from notebooks into `src/`
+- Type hints on all functions
+- Use pandas vectorized operations, avoid iterating rows
+- Set `random_state=42` for all stochastic operations
+- Log experiment parameters and metrics
+
+## Key Datasets
+
+| Name | Location | Description |
+|------|----------|-------------|
+| {{dataset}} | `data/raw/{{file}}` | {{description}} |
+
+## Important Notes
+
+{{Environment variables, data access instructions, experiment tracking setup.}}

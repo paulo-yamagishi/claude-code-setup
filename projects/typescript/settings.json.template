@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc*)",
+      "Bash(npx vitest*)",
+      "Bash(npx jest*)",
+      "Bash(npx eslint*)",
+      "Bash(npx prettier*)",
+      "Bash(npm run*)",
+      "Bash(npm install*)",
+      "Bash(npm test*)",
+      "Bash(pnpm *)",
+      "Bash(bun *)",
+      "Bash(node *)"
+    ],
+    "deny": [
+      "Bash(rm -rf /)*"
+    ]
+  }
+}

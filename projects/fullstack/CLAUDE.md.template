@@ -1,0 +1,80 @@
+# CLAUDE.md — {{PROJECT_NAME}}
+
+## Overview
+
+{{Brief description of what this project does.}}
+
+## Setup
+
+```bash
+npm install                     # install all dependencies
+cp .env.example .env            # configure environment variables
+npx prisma migrate dev          # apply database migrations
+npm run dev                     # start development server
+```
+
+## Commands
+
+```bash
+# Development
+npm run dev                     # start all services
+
+# Frontend
+npm run build                   # production build
+npx tsc --noEmit                # type check
+
+# Backend / API
+npm run dev:api                 # start API server only
+
+# Database
+npx prisma migrate dev          # create/apply migrations
+npx prisma generate             # regenerate client after schema change
+npx prisma db seed              # seed development data
+npx prisma studio               # visual DB browser
+
+# Testing
+npm test                        # run all tests
+npx vitest run                  # unit/integration tests
+npx playwright test             # e2e tests (if applicable)
+
+# Linting
+npx eslint .
+npx prettier --write .
+```
+
+## Project Structure
+
+```
+src/app/            — pages and routes
+src/components/     — UI components
+src/lib/            — shared utilities, DB client
+src/server/         — server-only logic (API routes, services)
+prisma/             — database schema and migrations
+```
+
+## Code Conventions
+
+### Frontend
+- React functional components with TypeScript
+- Colocate component, styles, and tests
+- Use server components by default (Next.js)
+
+### Backend
+- Validate all request input with zod
+- Return consistent response shapes: `{ data }` or `{ error }`
+- Database queries in service layer, not in route handlers
+
+### Database
+- Every schema change requires a migration
+- Never edit generated migration files
+
+## Environment Variables
+
+```
+DATABASE_URL=               — database connection string
+{{Add other env vars here}}
+```
+
+## Important Notes
+
+{{Architecture decisions, deployment notes, known issues.}}

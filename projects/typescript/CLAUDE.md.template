@@ -1,0 +1,56 @@
+# CLAUDE.md — {{PROJECT_NAME}}
+
+## Overview
+
+{{Brief description of what this project does.}}
+
+## Setup
+
+```bash
+npm install    # or: pnpm install / bun install
+```
+
+## Commands
+
+```bash
+# Development
+npm run dev                     # start dev server
+npx tsc --noEmit                # type check
+
+# Testing
+npx vitest run                  # run all tests
+npx vitest run --reporter=verbose  # verbose output
+npx vitest run path/to/test     # run specific test file
+
+# Linting & Formatting
+npx eslint .                    # lint
+npx eslint . --fix              # lint and auto-fix
+npx prettier --write .          # format
+```
+
+## Project Structure
+
+```
+src/            — source code
+src/types/      — shared TypeScript types/interfaces
+tests/          — test files (*.test.ts)
+```
+
+## Code Conventions
+
+- TypeScript strict mode enabled
+- Explicit return types on all exported functions
+- Prefer `interface` over `type` for object shapes
+- Use `unknown` instead of `any`
+- No default exports; use named exports
+
+## Testing Conventions
+
+- Use `describe` / `it` blocks
+- One concept per test
+- Name test files `*.test.ts` next to source or in `tests/`
+- Use factory functions for test data, not shared mutable state
+
+## Important Notes
+
+{{Any project-specific context, env vars, or architecture decisions.}}
