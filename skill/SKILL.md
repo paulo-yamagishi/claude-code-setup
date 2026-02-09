@@ -149,48 +149,27 @@ Common servers: GitHub (`npx -y @modelcontextprotocol/server-github`), Filesyste
 
 ## 5. Report — Progressive Disclosure
 
-### Layer 1: Scorecard (always show)
+### Scoring System
 
-```
-## Setup Scorecard
+Calculate a weighted 0–10 grade. Weights (total=10): CLAUDE.md/Settings/Hooks: 1.5 each (HIGH), Skills/Rules: 1.0 each (MEDIUM), Agents/MCP/Plugins/Sandboxing/Model/Styles: 0.5 each (LOW). Per category: GOOD=100%, IMPROVE=50%, MISSING=0% of weight. Grade labels:
+- 9–10: "Excellent — power-user setup"
+- 7–8: "Good — solid foundation, room to optimize"
+- 5–6: "Fair — core pieces in place, key gaps remain"
+- 3–4: "Basic — significant gaps affecting productivity"
+- 0–2: "Fresh start — high-impact improvements available"
 
-| Category      | Status  | Notes                           |
-|---------------|---------|----------------------------------|
-| CLAUDE.md     | GOOD    | 120 lines, has key sections     |
-| Settings      | IMPROVE | Missing deny rules              |
-| Hooks         | MISSING | No hooks configured             |
-| Skills        | MISSING | No skills directory             |
-| Agents        | MISSING | No agents directory             |
-| MCP           | GOOD    | GitHub configured               |
-| Rules         | MISSING | No rules directory              |
-| Plugins       | MISSING | No plugins installed            |
-| Sandboxing    | MISSING | Not enabled                     |
-| Model Config  | IMPROVE | Using default, no effort level  |
-| Output Styles | MISSING | No custom styles                |
+Example: 2 GOOD HIGH (1.5×2=3.0) + 1 IMPROVE HIGH (1.5×0.5=0.75) + 2 GOOD MEDIUM (1.0×2=2.0) + 6 MISSING LOW (0.5×0=0) = 5.75 → "Fair"
+Calculate the exact score BEFORE writing the banner. Never revise mid-output.
 
-Score: 2/11 GOOD · 2 IMPROVE · 7 MISSING
-```
+### Output Template
 
-### Layer 2: Suggestions (always show after scorecard)
-
-For each IMPROVE or MISSING category, list **numbered, one-line** project-specific suggestions:
-
-```
-## Top Suggestions
-
-1. [Hooks] Add auto-format hook for Prettier (detected)
-2. [Settings] Add deny rules for destructive commands
-3. [Skills] Create fix-issue skill for GitHub workflow
-4. [Plugins] Install TypeScript code intelligence plugin
-5. [Sandbox] Enable sandbox for autonomous work with less prompts
-...
-```
+Before generating any output, read `OUTPUT-FORMAT.md` from this skill's directory. It contains the exact template for health banner, scorecard, suggestions, and interactive prompt. Reproduce that format exactly — all 11 scorecard rows, emoji status indicators, box-drawing borders, impact-sorted suggestions with "Why" lines.
 
 ### Layer 3: Details (on request only)
 
-End with: **"Want details on any suggestion? Say 'details 1' or 'details all'. To apply: 'apply 1, 3, 5' or 'apply all'."**
+When the user asks for details, show the full config snippet for that suggestion.
 
-When the user asks for details, show the full config snippet for that suggestion. When they say apply, write the config files. The standard permission prompt serves as confirmation.
+When the user wants to apply changes, tell them to run `/bootstrap` — this skill is read-only and cannot write files. `/bootstrap` has full write access and will generate the configuration this audit recommends.
 
 ## 6. Tailored Suggestion Examples
 
@@ -207,30 +186,23 @@ Use detected stack to generate project-specific suggestions:
 
 ## 7. Workflow Suggestions
 
-After individual suggestions, add a **Recommended Workflows** subsection. Match detected project characteristics to these workflows and present the 1-3 most relevant, numbered continuously after individual suggestions:
+Match detected project characteristics to workflows. Present 1-3 most relevant, numbered after individual suggestions:
 
-| Workflow | Trigger | Sets up |
-|----------|---------|---------|
-| GitHub Issue → PR | GitHub remote + `gh` CLI | `/fix-issue` skill + GitHub MCP + `Bash(gh *)` allow + auto-format hook |
-| TDD Loop | Test framework detected | `/test-first` skill + test-writer agent + PostToolUse test-on-save hook |
-| Database Migration | Django/Rails/Prisma/Drizzle in deps | `/migrate` skill + DB MCP + migration safety deny rules |
-| Component Factory | React/Vue/Svelte in deps | `/create-component` skill following detected patterns |
-| CI/CD Integration | `.github/workflows/` or `.gitlab-ci.yml` | Headless mode tips + `--allowedTools` patterns |
-| Code Review Pipeline | Multiple contributors in git log | `/code-review` skill + code-reviewer agent (sonnet) + security-reviewer agent |
-| Monorepo | `turbo.json`, `nx.json`, `pnpm-workspace.yaml`, `lerna.json` | Scoped CLAUDE.md per package + workspace-aware commands |
-| API Development | Express/FastAPI/Django REST/NestJS in deps | API conventions rule + endpoint testing skill |
-| Data Pipeline | pandas/dbt/airflow/spark in deps | `/analyze` skill + notebook-aware workflow + data validation hooks |
-| Deploy Pipeline | Dockerfile, `fly.toml`, `vercel.json`, `netlify.toml` | `/deploy` skill + pre-deploy test hook |
-| Documentation | `docs/` + mkdocs/docusaurus/sphinx config | `/docs` skill + doc-writer agent + link-checker hook |
-| Security-First | Auth deps, `.env.production`, Docker | security-auditor agent (opus) + audit hook + deny rules for secrets |
+- **GitHub Issue → PR**: GitHub remote + `gh` → `/fix-issue` skill + GitHub MCP + auto-format hook
+- **TDD Loop**: Test framework → `/test-first` skill + test-writer agent + test-on-save hook
+- **Database Migration**: Django/Rails/Prisma → `/migrate` skill + DB MCP + safety deny rules
+- **Component Factory**: React/Vue/Svelte → `/create-component` skill
+- **Code Review**: Multiple contributors → `/code-review` skill + reviewer agent (sonnet)
+- **CI/CD**: `.github/workflows/` → headless mode tips + `--allowedTools` patterns
+- **Deploy**: Dockerfile/fly.toml/vercel.json → `/deploy` skill + pre-deploy test hook
+- **Security-First**: Auth deps + Docker → security-auditor agent (opus) + deny rules for secrets
 
-Output in Layer 2 as one-liners: `6. [Workflow] GitHub Issue → PR: skill + MCP + hooks for end-to-end issue fixing`. When user says "details N", show the full workflow breakdown with all config snippets (Layer 3).
+Output in Layer 2: `6. [Workflow · MEDIUM] GitHub Issue → PR: end-to-end issue fixing`. Details on request (Layer 3).
 
 ## 8. Edge Cases
 
-- **Fresh project (no .claude/):** "Fresh project — here are the 3 highest-impact items." Focus on CLAUDE.md, auto-format hook, permissions.
+- **Fresh project (no .claude/):** Grade 0–2. Banner: "Fresh start". Focus on CLAUDE.md, auto-format hook, permissions.
 - **Everything GOOD:** "Your setup looks solid!" Suggest power-user tweaks (agent teams, sandbox, opusplan).
 - **Monorepo:** Scope detection to current working directory.
-- **Ambiguous detection:** Ask the user to clarify.
-- **Existing config:** When applying, ALWAYS show content first. NEVER silently overwrite.
+- **Existing config:** When showing details, ALWAYS display the full snippet. Direct users to `/bootstrap` to apply.
 - **Minimize context:** Analyze internally. Only present scorecard + suggestions, not raw detection output.
