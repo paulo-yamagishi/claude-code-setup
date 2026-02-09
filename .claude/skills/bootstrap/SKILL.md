@@ -1,6 +1,7 @@
 ---
 name: bootstrap
 description: Auto-configure Claude Code for the current project (CLAUDE.md, settings, hooks, skills, agents, MCP, rules)
+argument-hint: "[framework-hint]"
 allowed-tools:
   - Read
   - Write
@@ -13,6 +14,24 @@ allowed-tools:
 # Bootstrap — Auto-Configure Claude Code for Your Project
 
 Work through each phase sequentially, asking the user for input only where marked.
+
+---
+
+## Phase 0: Check for Setup Report
+
+Before running detection, check if a `/setup` audit report exists earlier in this conversation. Look for a fenced code block with the `setup-report` language tag.
+
+**If found:**
+- Parse the stack, tools, category statuses, and suggestions
+- Tell the user: "Found your /setup audit — focusing on the gaps it identified."
+- Still run Phase 1 detection as normal, but use the setup report to **enhance** subsequent phases:
+  - **Prioritize** categories marked IMPROVE or MISSING — generate config for these first
+  - **Skip prompting** for categories marked GOOD — they're already configured
+  - **Use setup's suggestions** as a checklist — ensure each one is addressed in the generated config
+  - In Phase 8 summary, note which setup suggestions were applied
+
+**If not found:**
+- Proceed normally — this is the default path for standalone `/bootstrap` usage
 
 ---
 

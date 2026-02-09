@@ -171,6 +171,10 @@ When the user asks for details, show the full config snippet for that suggestion
 
 When the user wants to apply changes, tell them to run `/bootstrap` — this skill is read-only and cannot write files. `/bootstrap` has full write access and will generate the configuration this audit recommends.
 
+### Layer 4: Handoff Block (always include)
+
+After the interactive prompt, emit the handoff block defined in OUTPUT-FORMAT.md. This compact summary lets `/bootstrap` focus on the gaps this audit identified. Always include it — it costs nothing and enables the setup → bootstrap flow.
+
 ## 6. Tailored Suggestion Examples
 
 Use detected stack to generate project-specific suggestions:

@@ -92,3 +92,36 @@ End every report with:
 Replace N with actual suggestion numbers from your report.
 
 When the user says "bootstrap", tell them to run `/bootstrap` — it has write access and will apply the configuration changes this audit recommends.
+
+## Layer 4: Handoff Block (always include, hidden from user)
+
+After the interactive prompt, emit this fenced block so `/bootstrap` can consume findings:
+
+```setup-report
+stack: [language] | [framework] | [package-manager]
+formatter: [tool or "none"]
+linter: [tool or "none"]
+test-runner: [command or "none"]
+git-remote: [url or "none"]
+categories:
+  claude-md: [GOOD|IMPROVE|MISSING]
+  settings: [GOOD|IMPROVE|MISSING]
+  hooks: [GOOD|IMPROVE|MISSING]
+  skills: [GOOD|IMPROVE|MISSING]
+  rules: [GOOD|IMPROVE|MISSING]
+  agents: [GOOD|IMPROVE|MISSING]
+  mcp: [GOOD|IMPROVE|MISSING]
+  plugins: [GOOD|IMPROVE|MISSING]
+  sandbox: [GOOD|IMPROVE|MISSING]
+  model: [GOOD|IMPROVE|MISSING]
+  styles: [GOOD|IMPROVE|MISSING]
+suggestions:
+  - [N]. [Category · Impact] Description
+  - ...
+```
+
+Rules:
+- Use the exact `setup-report` language tag — bootstrap searches for this
+- Fill values from your actual audit, not placeholders
+- Include ALL suggestions (numbered, same as Layer 2)
+- This block appears in conversation context for bootstrap to find
