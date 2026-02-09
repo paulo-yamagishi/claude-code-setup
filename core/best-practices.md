@@ -185,7 +185,7 @@ then summarize the patterns you find.
 Run Claude non-interactively for batch operations:
 
 ```bash
-claude -p "Update copyright headers in all source files" --allowedTools 'Edit' 'Glob' 'Grep' 'Read'
+claude -p "Update copyright headers in all source files" --allowedTools "Edit,Glob,Grep,Read"
 ```
 
 ### Parallel sessions

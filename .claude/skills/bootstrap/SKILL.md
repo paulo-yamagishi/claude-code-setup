@@ -478,7 +478,7 @@ Create `.claude/agents/` directory.
 ```markdown
 ---
 name: code-reviewer
-description: Read-only agent for reviewing code changes
+description: Agent for reviewing code changes
 tools:
   - Read
   - Bash

@@ -75,7 +75,7 @@ Permission rules are evaluated in this order: **deny → ask → allow** (first 
     "ask": [
       "Bash(git push *)"
     ],
-    "defaultMode": "askForPermission"
+    "defaultMode": "default"
   }
 }
 ```

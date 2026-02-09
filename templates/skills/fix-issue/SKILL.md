@@ -8,7 +8,7 @@ allowed-tools:
   - Write
   - Glob
   - Grep
-  - Bash
+  - Bash(gh *)
 ---
 
 # Fix Issue

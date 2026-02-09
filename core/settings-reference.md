@@ -62,7 +62,7 @@ Control which tools Claude can use. Permission rules use the format `Tool` or `T
     "ask": [
       "Bash(git push *)"
     ],
-    "defaultMode": "askForPermission"
+    "defaultMode": "default"
   }
 }
 ```
