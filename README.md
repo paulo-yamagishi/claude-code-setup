@@ -2,23 +2,29 @@
 
 A `/setup` skill that audits your Claude Code configuration and suggests project-tailored improvements.
 
-## What It Does
+Claude Code has 11+ configuration surfaces — CLAUDE.md, settings, hooks, skills, agents, MCP, rules, plugins, sandboxing, model config, and output styles. Most projects only use 2-3. This skill finds what you're missing and helps you set it up.
 
-Type `/setup` in any project and Claude will:
+## Requirements
 
-1. **Audit** your current config across 11 categories — CLAUDE.md, settings, hooks, skills, agents, MCP, rules, plugins, sandboxing, model config, output styles
-2. **Suggest** improvements tailored to your tech stack — individual configs plus complete workflows (e.g., GitHub Issue → PR, TDD Loop, Deploy Pipeline)
-3. **Apply** only what you approve — progressive disclosure shows a scorecard first, details on request
+- [Claude Code](https://code.claude.com/docs) installed (`npm install -g @anthropic-ai/claude-code`)
 
 ## Install
 
 ```bash
 mkdir -p ~/.claude/skills/setup
 curl -o ~/.claude/skills/setup/SKILL.md \
-  https://raw.githubusercontent.com/paulo-yamagishi/claude-code-guide/main/skill/SKILL.md
+  https://raw.githubusercontent.com/paulo-yamagishi/claude-code-setup/main/skill/SKILL.md
 ```
 
 Then type `/setup` in any Claude Code session.
+
+## What It Does
+
+Type `/setup` in any project and Claude will:
+
+1. **Audit** your current config across 11 categories
+2. **Suggest** improvements tailored to your tech stack — individual configs plus complete workflows (e.g., GitHub Issue → PR, TDD Loop, Deploy Pipeline)
+3. **Apply** only what you approve — progressive disclosure shows a scorecard first, details on request
 
 ## Usage
 
@@ -96,6 +102,14 @@ To apply: 'apply 1, 3, 5' or 'apply all'.
 | `core/` | Reference guides for hooks, skills, MCP, settings, agents, model config, sandboxing, and more |
 | `templates/` | Copy-paste templates for manual config |
 | `projects/` | Language-specific guides (Python, TypeScript, etc.) |
+
+## Contributing
+
+Issues and PRs are welcome. If you find inaccurate config examples or missing Claude Code features, please open an issue.
+
+## License
+
+[MIT](LICENSE)
 
 ## Official Docs
 
