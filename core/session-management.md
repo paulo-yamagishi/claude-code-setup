@@ -200,11 +200,10 @@ When context reaches approximately 80% capacity, Claude automatically compacts t
 
 You do not need to manage this manually — it happens transparently. But if you notice Claude forgetting earlier details in a long session, it may be a sign that auto-compaction has occurred and some nuance was lost. In that case, start a fresh session.
 
-## PreCompact and PostCompact Hooks
+## PreCompact Hook
 
-You can customize what happens during compaction with hooks in your settings:
+You can customize what happens before compaction with the `PreCompact` hook in your settings:
 
 - **PreCompact**: Runs before compaction. Use it to save important state that might be lost during summarization.
-- **PostCompact**: Runs after compaction. Use it to re-inject critical context that must survive compaction.
 
-These are advanced features for users who find that compaction is losing information they need to preserve.
+This is an advanced feature for users who find that compaction is losing information they need to preserve.

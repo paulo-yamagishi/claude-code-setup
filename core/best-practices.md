@@ -43,15 +43,22 @@ Add a function to parse ISO dates.
 | Expected output | Data transformations, scripts, formatting changes |
 | Linters/formatters | Style and correctness checks via hooks |
 
-### Use pre-commit hooks for automatic verification
+### Use hooks for automatic verification
 
 ```json
 {
   "hooks": {
-    "PreCommit": [{
-      "command": "npm test && npm run lint",
-      "description": "Run tests and lint before commit"
-    }]
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'Verify before executing'"
+          }
+        ]
+      }
+    ]
   }
 }
 ```
@@ -125,27 +132,29 @@ Place project instructions where Claude can find them:
 - `CLAUDE.md` in subdirectories — scoped instructions for that area
 - `~/.claude/CLAUDE.md` — personal preferences across all projects
 
-Keep CLAUDE.md focused: build commands, test commands, code conventions, architecture notes. See `claude-md-guide.md`.
+Keep CLAUDE.md focused: build commands, test commands, code conventions, architecture notes. See `core/claude-md-guide.md`.
 
 ### Permissions
 
-Set `allowedTools` in `.claude/settings.json` to reduce approval prompts:
+Set `permissions.allow` in `.claude/settings.json` to reduce approval prompts:
 
 ```json
 {
-  "allowedTools": [
-    "Bash(npm test)",
-    "Bash(npm run lint)",
-    "Bash(npm run build)"
-  ]
+  "permissions": {
+    "allow": [
+      "Bash(npm test)",
+      "Bash(npm run lint)",
+      "Bash(npm run build)"
+    ]
+  }
 }
 ```
 
 ### Hooks, Skills, and MCP
 
-- **Hooks** — Automate checks on tool events. See `hooks-guide.md`.
-- **Skills** — Reusable prompt templates for common workflows. See `skills-guide.md`.
-- **MCP servers** — Connect external tools (databases, APIs, design tools). See `mcp-guide.md`.
+- **Hooks** — Automate checks on tool events. See `core/hooks-guide.md`.
+- **Skills** — Reusable prompt templates for common workflows. See `core/skills-guide.md`.
+- **MCP servers** — Connect external tools (databases, APIs, design tools). See `core/mcp-guide.md`.
 
 ---
 
@@ -191,7 +200,7 @@ claude -p "Write tests for the payment module" &
 
 ### Multi-agent fan-out
 
-Use agent teams for large-scale tasks. A lead agent delegates subtasks to worker agents that execute in parallel. See `agent-teams-guide.md`.
+Use agent teams for large-scale tasks. A lead agent delegates subtasks to worker agents that execute in parallel. See `core/agent-teams-guide.md`.
 
 ---
 

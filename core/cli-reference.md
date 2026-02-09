@@ -135,6 +135,14 @@ These commands are available inside an interactive Claude session:
 | `/mcp` | Show MCP server connection status and OAuth flows |
 | `/resume` | Resume a previous session |
 | `/config` | Open Claude Code settings |
+| `/model` | Switch the model mid-session |
+| `/fast` | Toggle fast mode (reduced reasoning) |
+| `/output-style` | Change output formatting style |
+| `/sandbox` | Toggle sandboxing |
+| `/statusline` | Configure status line display |
+| `/plan` | Enter plan mode for the current task |
+| `/rewind` | Undo the last conversation turn |
+| `/plugin` | Manage plugins |
 | `/quit` or `/exit` | Exit the session |
 
 ## Environment Variables

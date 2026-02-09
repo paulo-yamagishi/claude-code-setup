@@ -45,10 +45,12 @@ Path pattern resolution:
 
 ## defaultMode Values
 
-- `askForPermission` -- Ask the user before running tools (default)
+- `default` -- Ask the user before running tools (default)
 - `acceptEdits` -- Auto-approve file edits, ask for others
 - `bypassPermissions` -- Allow everything without asking
-- `denyEdits` -- Deny file modifications
+- `plan` -- Require plan approval before implementation
+- `delegate` -- Delegate permission decisions to subagents
+- `dontAsk` -- Deny rather than prompting
 
 ## Evaluation Order
 

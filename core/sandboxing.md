@@ -95,7 +95,10 @@ Configure sandbox behavior in `.claude/settings.json`:
 ```json
 {
   "sandbox": {
-    "enabled": true
+    "mode": "sandbox",
+    "network": {
+      "allowedDomains": []
+    }
   }
 }
 ```

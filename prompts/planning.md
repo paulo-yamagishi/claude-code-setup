@@ -46,7 +46,7 @@ Before implementing [feature], help me understand the scope:
 
 ## Tips
 
-- Always use `EnterPlanMode` for non-trivial tasks — it forces exploration before coding
+- Always use plan mode (`/plan` or `--permission-mode plan`) for non-trivial tasks — it forces exploration before coding
 - Let Claude explore the codebase first; don't prescribe the solution
 - Review the plan before approving — Claude will show you the files it intends to change
 - For very large tasks, plan in one session and execute in focused sub-sessions

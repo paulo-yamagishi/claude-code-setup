@@ -193,7 +193,12 @@ Use a `PermissionRequest` hook to auto-approve safe subagent actions (file reads
     "PermissionRequest": [
       {
         "matcher": "Read|Glob|Grep",
-        "command": "echo approve"
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo approve"
+          }
+        ]
       }
     ]
   }

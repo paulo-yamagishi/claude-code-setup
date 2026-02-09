@@ -122,7 +122,7 @@ Hook definitions (see the [Hooks Guide](hooks-guide.md) for details):
         "hooks": [
           {
             "type": "command",
-            "command": "npx prettier --write $CLAUDE_TOOL_INPUT_PATH"
+            "command": "npx prettier --write \"$CLAUDE_TOOL_INPUT_PATH\""
           }
         ]
       }

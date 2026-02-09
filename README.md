@@ -15,7 +15,7 @@ Type `/setup` in any project and Claude will:
 ```bash
 mkdir -p ~/.claude/skills/setup
 curl -o ~/.claude/skills/setup/SKILL.md \
-  https://raw.githubusercontent.com/YOUR_USER/claude-code-guide/main/skill/SKILL.md
+  https://raw.githubusercontent.com/paulo-yamagishi/claude-code-guide/main/skill/SKILL.md
 ```
 
 Then type `/setup` in any Claude Code session.

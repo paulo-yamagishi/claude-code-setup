@@ -1,0 +1,19 @@
+# Personal/local settings
+.claude/settings.local.json
+.claude/agent-memory-local/
+
+# Environment
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (if installed locally)
+node_modules/
+
+# Python
+__pycache__/
+*.pyc
+.venv/

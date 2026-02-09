@@ -1,18 +1,22 @@
 ---
 name: fix-issue
 description: Fix a GitHub issue by number — reads the issue, explores the code, and implements a fix
-args:
-  - name: issue_number
-    description: The GitHub issue number to fix
-    required: true
+argument-hint: "<issue_number>"
+allowed-tools:
+  - Read
+  - Edit
+  - Write
+  - Glob
+  - Grep
+  - Bash
 ---
 
 # Fix Issue
 
-Fix GitHub issue #{{issue_number}}.
+Fix GitHub issue #$ARGUMENTS.
 
 ## Steps
-1. Read the issue details: `gh issue view {{issue_number}}`
+1. Read the issue details: `gh issue view $ARGUMENTS`
 2. Understand the problem described in the issue
 3. Explore the relevant code to find the root cause
 4. Plan the fix

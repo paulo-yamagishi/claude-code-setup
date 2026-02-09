@@ -485,7 +485,7 @@ tools:
   - Grep
   - Glob
 model: sonnet
-permissionMode: allow
+permissionMode: acceptEdits
 ---
 
 You are a code review agent. Your job:
@@ -559,7 +559,7 @@ tools:
   - Grep
   - Glob
 model: opus
-permissionMode: allow
+permissionMode: acceptEdits
 ---
 
 You audit code for security issues:
