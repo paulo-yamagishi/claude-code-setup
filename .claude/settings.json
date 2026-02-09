@@ -1,0 +1,54 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Edit",
+      "Write",
+      "Glob",
+      "Grep",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push)",
+      "Bash(git log *)",
+      "Bash(git config *)",
+      "Bash(git shortlog *)",
+      "Bash(which *)",
+      "Bash(command -v *)",
+      "Bash(gh issue *)",
+      "Bash(gh pr *)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(git reset --hard *)",
+      "Bash(git checkout -- .)",
+      "Bash(git clean -f *)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'display notification \"Claude finished\" with title \"Claude Code\"'"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "case \"$CLAUDE_TOOL_INPUT\" in *rm\\ -rf*|*DROP\\ *|*--force*|*--hard*) echo 'Blocked dangerous command' >&2; exit 2;; esac"
+          }
+        ]
+      }
+    ]
+  }
+}
