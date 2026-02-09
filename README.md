@@ -7,7 +7,7 @@ A `/setup` skill that audits your Claude Code configuration and suggests project
 Type `/setup` in any project and Claude will:
 
 1. **Audit** your current config across 11 categories — CLAUDE.md, settings, hooks, skills, agents, MCP, rules, plugins, sandboxing, model config, output styles
-2. **Suggest** improvements tailored to your tech stack — concrete, ready-to-use configs
+2. **Suggest** improvements tailored to your tech stack — individual configs plus complete workflows (e.g., GitHub Issue → PR, TDD Loop, Deploy Pipeline)
 3. **Apply** only what you approve — progressive disclosure shows a scorecard first, details on request
 
 ## Install

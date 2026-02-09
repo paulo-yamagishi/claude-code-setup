@@ -32,7 +32,9 @@ Silently scan the project. Do NOT dump raw file contents to the user.
 
 **Existing Claude config:** Check for `.claude/` directory, `CLAUDE.md`, `.claude/settings.json`, `.claude/settings.local.json`, `.claude/skills/`, `.claude/agents/`, `.claude/rules/`, `.claude/output-styles/`, `.mcp.json`. Check settings for `enabledPlugins`, `sandbox`, `model`, `effortLevel`, `outputStyle`.
 
-**Git:** Check for `.git/`, remote origin URL (`git config --get remote.origin.url`).
+**Git:** Check for `.git/`, remote origin URL (`git config --get remote.origin.url`), contributor count (`git shortlog -sn --no-merges | wc -l`).
+
+**Workflow triggers:** CI/CD (`.github/workflows/`, `.gitlab-ci.yml`, `Jenkinsfile`), deploy (`Dockerfile`, `docker-compose.yml`, `fly.toml`, `vercel.json`, `netlify.toml`), monorepo (`turbo.json`, `nx.json`, `pnpm-workspace.yaml`, `lerna.json`), API (route/endpoint patterns, `openapi.yaml`, `swagger.json`), data (`*.ipynb`, `dbt_project.yml`, airflow DAGs), docs (`docs/` + `mkdocs.yml`/`docusaurus.config.js`/`conf.py`), production indicators (auth/session deps, `.env.production`, Docker).
 
 Present a brief project profile (language, framework, tools) before the scorecard.
 
@@ -203,7 +205,28 @@ Use detected stack to generate project-specific suggestions:
 - **Sandbox**: Any project → suggest enabling for reduced prompts. CI/CD → suggest auto-allow mode.
 - **Model**: Complex project → suggest opusplan. Cost-sensitive → suggest effortLevel: medium.
 
-## 7. Edge Cases
+## 7. Workflow Suggestions
+
+After individual suggestions, add a **Recommended Workflows** subsection. Match detected project characteristics to these workflows and present the 1-3 most relevant, numbered continuously after individual suggestions:
+
+| Workflow | Trigger | Sets up |
+|----------|---------|---------|
+| GitHub Issue → PR | GitHub remote + `gh` CLI | `/fix-issue` skill + GitHub MCP + `Bash(gh *)` allow + auto-format hook |
+| TDD Loop | Test framework detected | `/test-first` skill + test-writer agent + PostToolUse test-on-save hook |
+| Database Migration | Django/Rails/Prisma/Drizzle in deps | `/migrate` skill + DB MCP + migration safety deny rules |
+| Component Factory | React/Vue/Svelte in deps | `/create-component` skill following detected patterns |
+| CI/CD Integration | `.github/workflows/` or `.gitlab-ci.yml` | Headless mode tips + `--allowedTools` patterns |
+| Code Review Pipeline | Multiple contributors in git log | `/code-review` skill + code-reviewer agent (sonnet) + security-reviewer agent |
+| Monorepo | `turbo.json`, `nx.json`, `pnpm-workspace.yaml`, `lerna.json` | Scoped CLAUDE.md per package + workspace-aware commands |
+| API Development | Express/FastAPI/Django REST/NestJS in deps | API conventions rule + endpoint testing skill |
+| Data Pipeline | pandas/dbt/airflow/spark in deps | `/analyze` skill + notebook-aware workflow + data validation hooks |
+| Deploy Pipeline | Dockerfile, `fly.toml`, `vercel.json`, `netlify.toml` | `/deploy` skill + pre-deploy test hook |
+| Documentation | `docs/` + mkdocs/docusaurus/sphinx config | `/docs` skill + doc-writer agent + link-checker hook |
+| Security-First | Auth deps, `.env.production`, Docker | security-auditor agent (opus) + audit hook + deny rules for secrets |
+
+Output in Layer 2 as one-liners: `6. [Workflow] GitHub Issue → PR: skill + MCP + hooks for end-to-end issue fixing`. When user says "details N", show the full workflow breakdown with all config snippets (Layer 3).
+
+## 8. Edge Cases
 
 - **Fresh project (no .claude/):** "Fresh project — here are the 3 highest-impact items." Focus on CLAUDE.md, auto-format hook, permissions.
 - **Everything GOOD:** "Your setup looks solid!" Suggest power-user tweaks (agent teams, sandbox, opusplan).
