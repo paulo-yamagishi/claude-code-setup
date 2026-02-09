@@ -60,7 +60,7 @@ Score each category: **GOOD**, **IMPROVE**, **MISSING**.
 ### Skills
 1. `.claude/skills/` directory exists with at least one skill?
 2. Skills use proper SKILL.md format with frontmatter?
-3. Common skills present: `fix-issue`, `code-review`?
+3. CLAUDE.md contains skill lifecycle instruction (evaluate creating/updating skills after major tasks)?
 
 ### Agents
 1. `.claude/agents/` directory exists with custom agents?
@@ -197,7 +197,7 @@ When the user asks for details, show the full config snippet for that suggestion
 Use detected stack to generate project-specific suggestions:
 
 - **Hooks**: Detected Prettier → `prettier --write "$CLAUDE_TOOL_INPUT_PATH"`. Detected Black → `black "$CLAUDE_TOOL_INPUT_PATH" 2>/dev/null || true`. Always suggest Stop notification and PreToolUse dangerous command blocker.
-- **Skills**: Always fix-issue + code-review. React/Vue → create-component. Django/Rails/Prisma → migrate.
+- **Skills**: Always fix-issue + code-review. React/Vue → create-component. Django/Rails/Prisma → migrate. Always suggest skill lifecycle instruction in CLAUDE.md if missing.
 - **Agents**: Always code-reviewer (sonnet) + test-writer (sonnet). Production app → security-auditor (opus).
 - **MCP**: GitHub remote → GitHub server. PostgreSQL/MySQL in deps → database server.
 - **Settings**: Detected test/lint/build → permissions.allow. Standard deny rules for rm -rf, DROP, --force.

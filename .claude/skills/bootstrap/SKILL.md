@@ -254,6 +254,14 @@ Create project-tailored instructions:
 [For Go: error handling, package naming]
 [For Rust: Result/Option handling, trait bounds]
 
+## Skill Lifecycle
+
+After completing a major task, evaluate:
+- **Create a new skill** if the task involved a repeatable workflow that would benefit from a dedicated `/skill-name` command
+- **Update an existing skill** if you used a skill and found it missing steps, producing suboptimal results, or not covering edge cases you encountered
+
+When creating or updating skills, follow the format in `.claude/skills/` and keep them focused on a single workflow.
+
 ---
 
 **For detailed guides, see:**
